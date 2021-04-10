@@ -2,3 +2,6 @@ server:
   port: 8080
   servlet:
     context-path: /api/v1
+springdoc:
+  api-docs:
+    path: /api-docs
