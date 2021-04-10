@@ -1,7 +1,7 @@
 package com.github.afterbvrner.broadcaster.model.scheduled.request;
 
 import com.github.afterbvrner.broadcaster.model.Message;
-import com.github.afterbvrner.broadcaster.model.scheduled.info.FixedRateSchedulingMessageInfo;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.FixedRateScheduledMessageInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +14,7 @@ public class FixedRateScheduledMessageRequest extends ScheduledMessageRequest {
     private long fixedRate;
 
     @Override
-    public FixedRateSchedulingMessageInfo convertToInfo(Message message, List<String> recipients) {
-        return new FixedRateSchedulingMessageInfo(message, recipients, fixedRate);
+    public FixedRateScheduledMessageInfo convertToInfo(Message message, List<String> recipients) {
+        return new FixedRateScheduledMessageInfo(message, recipients, fixedRate);
     }
 }

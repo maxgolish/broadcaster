@@ -3,7 +3,7 @@ package com.github.afterbvrner.broadcaster.service;
 import com.github.afterbvrner.broadcaster.entity.ScheduledMessageEntity;
 import com.github.afterbvrner.broadcaster.exception.ScheduledTaskNotFound;
 import com.github.afterbvrner.broadcaster.model.Message;
-import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduleMessageInfo;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageInfo;
 import com.github.afterbvrner.broadcaster.repository.ScheduledMessageRepository;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -24,7 +24,7 @@ public class SchedulerService {
     private final Map<UUID, ScheduledTaskInfo> currentTasks = new HashMap<>();
     private final ScheduledMessageRepository scheduledMessageRepository;
 
-    public void schedule(ScheduleMessageInfo info) {
+    public void schedule(ScheduledMessageInfo info) {
         ScheduledMessageEntity messageEntity = info.toEntity();
         ScheduledMessageEntity savedMessageEntity = scheduledMessageRepository.save(messageEntity);
         ScheduledFuture<?> scheduledFuture = runTask(
@@ -38,7 +38,7 @@ public class SchedulerService {
         );
     }
 
-    public List<ScheduleMessageInfo> getCurrentTasks() {
+    public List<ScheduledMessageInfo> getCurrentTasks() {
         return currentTasks
                 .values()
                 .stream()
@@ -64,7 +64,7 @@ public class SchedulerService {
         return false;
     }
 
-    public ScheduleMessageInfo getInfoById(UUID id) {
+    public ScheduledMessageInfo getInfoById(UUID id) {
         ScheduledTaskInfo taskInfo = currentTasks.get(id);
         if (taskInfo ==null)
             throw new ScheduledTaskNotFound(id);
@@ -89,6 +89,6 @@ public class SchedulerService {
     @Value
     private static class ScheduledTaskInfo {
         ScheduledFuture<?> scheduledFuture;
-        ScheduleMessageInfo info;
+        ScheduledMessageInfo info;
     }
 }

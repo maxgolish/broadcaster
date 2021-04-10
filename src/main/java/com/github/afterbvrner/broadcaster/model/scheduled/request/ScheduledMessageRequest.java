@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.afterbvrner.broadcaster.model.Message;
 import com.github.afterbvrner.broadcaster.model.MessageRequest;
-import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduleMessageInfo;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -21,5 +21,5 @@ import java.util.List;
         property = "type"
 )
 public abstract class ScheduledMessageRequest extends MessageRequest {
-    public abstract ScheduleMessageInfo convertToInfo(Message message, List<String> recipients);
+    public abstract ScheduledMessageInfo convertToInfo(Message message, List<String> recipients);
 }

@@ -1,7 +1,7 @@
 package com.github.afterbvrner.broadcaster.controller;
 
 import com.github.afterbvrner.broadcaster.model.MessageRequest;
-import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduleMessageInfo;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageInfo;
 import com.github.afterbvrner.broadcaster.model.scheduled.request.ScheduledMessageRequest;
 import com.github.afterbvrner.broadcaster.service.MessageService;
 import lombok.AllArgsConstructor;
@@ -33,12 +33,12 @@ public class MessageController {
     }
 
     @GetMapping("/scheduled")
-    public List<ScheduleMessageInfo> getCurrentScheduledMessages() {
+    public List<ScheduledMessageInfo> getCurrentScheduledMessages() {
         return messageService.getCurrentScheduledMessages();
     }
 
     @GetMapping("/scheduled/{taskId}")
-    public ScheduleMessageInfo getCurrentScheduledMessages(@PathVariable UUID taskId) {
+    public ScheduledMessageInfo getCurrentScheduledMessages(@PathVariable UUID taskId) {
         return messageService.getInfoById(taskId);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class ScheduleMessageInfo {
+public abstract class ScheduledMessageInfo {
     private Message message;
     private List<String> recipients;
 

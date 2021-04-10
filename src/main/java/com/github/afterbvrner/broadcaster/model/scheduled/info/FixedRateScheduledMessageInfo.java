@@ -9,11 +9,11 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FixedRateSchedulingMessageInfo extends ScheduleMessageInfo {
+public class FixedRateScheduledMessageInfo extends ScheduledMessageInfo {
 
     private long fixedRate;
 
-    public FixedRateSchedulingMessageInfo(Message message, List<String> recipients, long fixedRate) {
+    public FixedRateScheduledMessageInfo(Message message, List<String> recipients, long fixedRate) {
         super(message, recipients);
         this.fixedRate = fixedRate;
     }

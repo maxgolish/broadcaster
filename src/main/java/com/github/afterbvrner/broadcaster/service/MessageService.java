@@ -4,7 +4,7 @@ import com.github.afterbvrner.broadcaster.entity.TemplateEntity;
 import com.github.afterbvrner.broadcaster.exception.CannotStopSchedulingException;
 import com.github.afterbvrner.broadcaster.exception.TemplateNotFoundException;
 import com.github.afterbvrner.broadcaster.model.Message;
-import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduleMessageInfo;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageInfo;
 import com.github.afterbvrner.broadcaster.model.scheduled.request.ScheduledMessageRequest;
 import com.github.afterbvrner.broadcaster.repository.TemplateRepository;
 import lombok.AllArgsConstructor;
@@ -48,11 +48,11 @@ public class MessageService {
             throw new CannotStopSchedulingException(id);
     }
 
-    public List<ScheduleMessageInfo> getCurrentScheduledMessages() {
+    public List<ScheduledMessageInfo> getCurrentScheduledMessages() {
         return schedulerService.getCurrentTasks();
     }
 
-    public ScheduleMessageInfo getInfoById(UUID id) {
+    public ScheduledMessageInfo getInfoById(UUID id) {
         return schedulerService.getInfoById(id);
     }
 }

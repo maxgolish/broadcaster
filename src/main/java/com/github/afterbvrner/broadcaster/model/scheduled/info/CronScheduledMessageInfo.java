@@ -1,7 +1,6 @@
 package com.github.afterbvrner.broadcaster.model.scheduled.info;
 
 import com.github.afterbvrner.broadcaster.entity.CronScheduledMessageEntity;
-import com.github.afterbvrner.broadcaster.entity.FixedScheduledMessageEntity;
 import com.github.afterbvrner.broadcaster.model.Message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CronScheduledMessageInfo extends ScheduleMessageInfo {
+public class CronScheduledMessageInfo extends ScheduledMessageInfo {
 
     private String expression;
 

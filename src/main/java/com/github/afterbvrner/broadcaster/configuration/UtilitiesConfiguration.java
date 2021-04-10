@@ -7,7 +7,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class UtilBeansConfiguration {
+public class UtilitiesConfiguration {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -15,6 +15,8 @@ public class UtilBeansConfiguration {
 
     @Bean
     public TaskScheduler taskScheduler() {
-        return new ThreadPoolTaskScheduler();
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(4);
+        return scheduler;
     }
 }
