@@ -14,7 +14,7 @@ public class EndpointNotAvailableException extends RuntimeException {
         super("Endpoint " + url + " not available");
     }
 
-    public EndpointNotAvailableException(String url, HttpClientErrorException cause) {
-        super("Endpoint " + url + " not available, response status: " + cause.getStatusCode());
+    public EndpointNotAvailableException(String url, Throwable cause) {
+        super("Endpoint " + url + " not available, cause: " + cause.getMessage());
     }
 }

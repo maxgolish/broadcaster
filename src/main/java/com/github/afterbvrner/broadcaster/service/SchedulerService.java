@@ -24,7 +24,7 @@ public class SchedulerService {
     private final Map<UUID, ScheduledTaskInfo> currentTasks = new HashMap<>();
     private final ScheduledMessageRepository scheduledMessageRepository;
 
-    public void schedule(ScheduledMessageInfo info) {
+    public UUID schedule(ScheduledMessageInfo info) {
         ScheduledMessageEntity messageEntity = info.toEntity();
         ScheduledMessageEntity savedMessageEntity = scheduledMessageRepository.save(messageEntity);
         ScheduledFuture<?> scheduledFuture = runTask(
@@ -36,6 +36,14 @@ public class SchedulerService {
                 savedMessageEntity.getId(),
                 new ScheduledTaskInfo(scheduledFuture, info)
         );
+        return savedMessageEntity.getId();
+    }
+
+    private ScheduledFuture<?> runTask(Message message, List<String> recipients, Trigger trigger) {
+        return taskScheduler.schedule(
+                () -> broadcastService.send(message, recipients),
+                trigger
+        );
     }
 
     public List<ScheduledMessageInfo> getCurrentTasks() {
@@ -46,11 +54,11 @@ public class SchedulerService {
                 .collect(Collectors.toList());
     }
 
-    private ScheduledFuture<?> runTask(Message message, List<String> recipients, Trigger trigger) {
-        return taskScheduler.schedule(
-                () -> broadcastService.send(message, recipients),
-                trigger
-        );
+    public ScheduledMessageInfo getInfoById(UUID id) {
+        ScheduledTaskInfo taskInfo = currentTasks.get(id);
+        if (taskInfo ==null)
+            throw new ScheduledTaskNotFound(id);
+        return taskInfo.getInfo();
     }
 
     public boolean stopTask(UUID id) {
@@ -64,11 +72,14 @@ public class SchedulerService {
         return false;
     }
 
-    public ScheduledMessageInfo getInfoById(UUID id) {
-        ScheduledTaskInfo taskInfo = currentTasks.get(id);
-        if (taskInfo ==null)
-            throw new ScheduledTaskNotFound(id);
-        return taskInfo.getInfo();
+    public void shutdown() {
+        currentTasks
+                .values()
+                .forEach(task -> task.getScheduledFuture().cancel(true));
+        scheduledMessageRepository
+                .findAll()
+                .forEach(message -> scheduledMessageRepository.deleteById(message.getId()));
+        currentTasks.clear();
     }
 
 //    // Необходим для переинициализации шедулера после перезапуска приложения

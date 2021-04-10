@@ -7,8 +7,10 @@ import com.github.afterbvrner.broadcaster.model.MessageRequest;
 import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -20,6 +22,10 @@ import java.util.List;
         use = JsonTypeInfo.Id.NAME,
         property = "type"
 )
+@NoArgsConstructor
 public abstract class ScheduledMessageRequest extends MessageRequest {
     public abstract ScheduledMessageInfo convertToInfo(Message message, List<String> recipients);
+    public ScheduledMessageRequest(String templateId, Map<String, String> variables) {
+        super(templateId, variables);
+    }
 }

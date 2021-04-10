@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,7 +17,7 @@ public class TemplateEntity {
     private String templateId;
     private String template;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> recipients;
 
     public TemplateEntity(TemplateRequest templateRequest) {

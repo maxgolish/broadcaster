@@ -7,6 +7,7 @@ import com.github.afterbvrner.broadcaster.service.MessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,11 +24,11 @@ public class MessageController {
     }
 
     @PostMapping("/scheduled")
-    public void setScheduling(@RequestBody ScheduledMessageRequest request) {
-        messageService.runScheduledTask(request);
+    public UUID setScheduling(@Valid @RequestBody ScheduledMessageRequest request) {
+        return messageService.runScheduledTask(request);
     }
 
-    @DeleteMapping("scheduled/{taskId}/stop")
+    @DeleteMapping("/scheduled/{taskId}/stop")
     public void stopScheduling(@PathVariable UUID taskId) {
         messageService.stopTask(taskId);
     }

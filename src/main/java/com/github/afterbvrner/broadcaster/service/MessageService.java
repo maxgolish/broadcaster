@@ -32,12 +32,12 @@ public class MessageService {
         broadcastService.send(message, template.getRecipients());
     }
 
-    public void runScheduledTask(ScheduledMessageRequest request) {
+    public UUID runScheduledTask(ScheduledMessageRequest request) {
         TemplateEntity template = templateRepository
                 .findById(request.getTemplateId())
                 .orElseThrow(() -> new TemplateNotFoundException(request.getTemplateId()));
         Message message = messageCreator.createMessage(template.getTemplate(), request.getVariables());
-        schedulerService.schedule(
+        return schedulerService.schedule(
                 request.convertToInfo(message, new ArrayList<>(template.getRecipients()))
         );
     }

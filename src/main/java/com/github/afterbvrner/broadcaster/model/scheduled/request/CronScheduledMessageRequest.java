@@ -8,12 +8,15 @@ import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageI
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CronScheduledMessageRequest extends ScheduledMessageRequest {
+
+    @NotNull
     private String expression;
 
     @JsonCreator
