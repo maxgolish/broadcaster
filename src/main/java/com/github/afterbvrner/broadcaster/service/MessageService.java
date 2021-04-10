@@ -1,50 +1,58 @@
 package com.github.afterbvrner.broadcaster.service;
 
 import com.github.afterbvrner.broadcaster.entity.TemplateEntity;
+import com.github.afterbvrner.broadcaster.exception.CannotStopSchedulingException;
 import com.github.afterbvrner.broadcaster.exception.TemplateNotFoundException;
-import com.github.afterbvrner.broadcaster.exception.VariableNotFoundInTemplateException;
-import com.github.afterbvrner.broadcaster.exception.WrongVariableDefinitionException;
 import com.github.afterbvrner.broadcaster.model.Message;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduleMessageInfo;
+import com.github.afterbvrner.broadcaster.model.scheduled.request.ScheduledMessageRequest;
 import com.github.afterbvrner.broadcaster.repository.TemplateRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class MessageService {
-    private final static String ESCAPED_DOLLAR = "###DOLLAR_SIGN###";
 
-    private final TemplateRepository templateRepository;
+    private final MessageCreator messageCreator;
     private final BroadcastService broadcastService;
+    private final SchedulerService schedulerService;
+    private final TemplateRepository templateRepository;
 
-    public void send(String templateId, Map<String, String> variables) {
+    public void createAndSend(String templateId, Map<String, String> variables) {
         TemplateEntity template = templateRepository
                 .findById(templateId)
                 .orElseThrow(() -> new TemplateNotFoundException(templateId));
-        Message message = createMessage(template.getTemplate(), variables);
+        Message message = messageCreator.createMessage(template.getTemplate(), variables);
         broadcastService.send(message, template.getRecipients());
     }
 
-    private Message createMessage(String template, Map<String, String> variables) {
-        String constructedMessage = template.replaceAll("\\\\$", ESCAPED_DOLLAR);
-
-        for (var variable : variables.entrySet())
-            constructedMessage = replaceVariable(constructedMessage, variable.getKey(), variable.getValue());
-        constructedMessage = constructedMessage.replaceAll(ESCAPED_DOLLAR, "$");
-        return new Message(constructedMessage);
+    public void runScheduledTask(ScheduledMessageRequest request) {
+        TemplateEntity template = templateRepository
+                .findById(request.getTemplateId())
+                .orElseThrow(() -> new TemplateNotFoundException(request.getTemplateId()));
+        Message message = messageCreator.createMessage(template.getTemplate(), request.getVariables());
+        schedulerService.schedule(
+                request.convertToInfo(message, new ArrayList<>(template.getRecipients()))
+        );
     }
 
-    private String constructVariable(String key) {
-        return "$" + key + "$";
+    public void stopTask(UUID id) {
+        boolean stopped = schedulerService.stopTask(id);
+        if (!stopped)
+            throw new CannotStopSchedulingException(id);
     }
 
-    private String replaceVariable(String initialString, String key, String value) {
-        if (!initialString.contains(constructVariable(key)))
-            throw new WrongVariableDefinitionException("Key " + key + " not found in template");
-        return initialString.replaceAll(constructVariable(key), value);
+    public List<ScheduleMessageInfo> getCurrentScheduledMessages() {
+        return schedulerService.getCurrentTasks();
+    }
+
+    public ScheduleMessageInfo getInfoById(UUID id) {
+        return schedulerService.getInfoById(id);
     }
 }
