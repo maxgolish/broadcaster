@@ -29,7 +29,7 @@ public class MessageController {
         return messageService.runScheduledTask(request);
     }
 
-    @DeleteMapping("/scheduled/{taskId}/stop")
+    @PostMapping("/scheduled/{taskId}/stop")
     public void stopScheduling(@PathVariable UUID taskId) {
         messageService.stopTask(taskId);
     }
