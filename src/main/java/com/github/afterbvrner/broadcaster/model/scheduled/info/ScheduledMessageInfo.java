@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URL;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public abstract class ScheduledMessageInfo {
     private Message message;
-    private List<String> recipients;
+    private List<URL> recipients;
 
     public abstract ScheduledMessageEntity toEntity();
 }

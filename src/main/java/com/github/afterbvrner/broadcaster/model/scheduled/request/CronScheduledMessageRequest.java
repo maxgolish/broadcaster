@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class CronScheduledMessageRequest extends ScheduledMessageRequest {
     }
 
     @Override
-    public ScheduledMessageInfo convertToInfo(Message message, List<String> recipients) {
+    public ScheduledMessageInfo convertToInfo(Message message, List<URL> recipients) {
         return new CronScheduledMessageInfo(message, recipients, expression);
     }
 }

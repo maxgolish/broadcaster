@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.net.URL;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class TemplateEntity {
     private String template;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> recipients;
+    private List<URL> recipients;
 
     public TemplateEntity(TemplateRequest templateRequest) {
         this.templateId = templateRequest.getTemplateId();

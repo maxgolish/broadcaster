@@ -5,6 +5,7 @@ import com.github.afterbvrner.broadcaster.model.Message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.net.URL;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ public class FixedRateScheduledMessageInfo extends ScheduledMessageInfo {
 
     private long fixedRate;
 
-    public FixedRateScheduledMessageInfo(Message message, List<String> recipients, long fixedRate) {
+    public FixedRateScheduledMessageInfo(Message message, List<URL> recipients, long fixedRate) {
         super(message, recipients);
         this.fixedRate = fixedRate;
     }

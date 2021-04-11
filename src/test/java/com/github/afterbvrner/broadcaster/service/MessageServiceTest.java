@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,11 +24,11 @@ public class MessageServiceTest {
     private TemplateService templateService;
 
     @Test
-    public void sendMessageToCorrectUrl() {
+    public void sendMessageToCorrectUrl() throws MalformedURLException {
         String templateId = "test1";
         String template = "Welcome to the $test$";
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         TemplateRequest request = new TemplateRequest(
                 templateId,
                 template,
@@ -39,11 +41,11 @@ public class MessageServiceTest {
     }
 
     @Test
-    public void sendMessageToIncorrectUrl_ThrowException() {
+    public void sendMessageToIncorrectUrl_ThrowException() throws MalformedURLException {
         String templateId = "test2";
         String template = "Welcome to the $test$";
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://~~~.com");
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://~~~.com"));
         TemplateRequest request = new TemplateRequest(
                 templateId,
                 template,
@@ -59,11 +61,11 @@ public class MessageServiceTest {
     }
 
     @Test
-    public void startScheduledMessaging() {
+    public void startScheduledMessaging() throws MalformedURLException {
         String templateId = "test3";
         String template = "Welcome to the $test$";
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         TemplateRequest templateRequest = new TemplateRequest(
                 templateId,
                 template,

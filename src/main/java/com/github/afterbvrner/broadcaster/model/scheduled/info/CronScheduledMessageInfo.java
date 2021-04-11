@@ -5,6 +5,7 @@ import com.github.afterbvrner.broadcaster.model.Message;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.net.URL;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ public class CronScheduledMessageInfo extends ScheduledMessageInfo {
 
     private String expression;
 
-    public CronScheduledMessageInfo(Message message, List<String> recipients, String expression) {
+    public CronScheduledMessageInfo(Message message, List<URL> recipients, String expression) {
         super(message, recipients);
         this.expression = expression;
     }

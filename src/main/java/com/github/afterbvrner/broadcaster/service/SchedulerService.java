@@ -13,6 +13,7 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class SchedulerService {
         return savedMessageEntity.getId();
     }
 
-    private ScheduledFuture<?> runTask(Message message, List<String> recipients, Trigger trigger) {
+    private ScheduledFuture<?> runTask(Message message, List<URL> recipients, Trigger trigger) {
         return taskScheduler.schedule(
                 () -> broadcastService.send(message, recipients),
                 trigger

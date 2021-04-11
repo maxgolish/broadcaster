@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class MessageApiTest {
         TemplateRequest request = new TemplateRequest(
                 "templid1",
                 "template $test$",
-                List.of("https://httpbin.org/post")
+                List.of(new URL("https://httpbin.org/post"))
         );
         mockMvc.perform(post("/template")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +52,7 @@ public class MessageApiTest {
         TemplateRequest request = new TemplateRequest(
                 "templid2",
                 "template $test$",
-                List.of("https://httpbin.org/post")
+                List.of(new URL("https://httpbin.org/post"))
         );
         mockMvc.perform(post("/template")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +73,7 @@ public class MessageApiTest {
         TemplateRequest request = new TemplateRequest(
                 "templid3",
                 "template $test$",
-                List.of("https://httpbin.org/post")
+                List.of(new URL("https://httpbin.org/post"))
         );
         mockMvc.perform(post("/template")
                 .contentType(MediaType.APPLICATION_JSON)

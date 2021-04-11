@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,9 +29,9 @@ public class SchedulerServiceTest {
     }
 
     @Test
-    public void createCronScheduling_ReturnValidInfo() {
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+    public void createCronScheduling_ReturnValidInfo() throws MalformedURLException {
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         CronScheduledMessageInfo initialInfo = new CronScheduledMessageInfo(
                 new Message("testmessage"),
                 recipients,
@@ -42,9 +44,9 @@ public class SchedulerServiceTest {
     }
 
     @Test
-    public void createFixedScheduling_ReturnValidInfo() {
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+    public void createFixedScheduling_ReturnValidInfo() throws MalformedURLException {
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         FixedRateScheduledMessageInfo initialInfo = new FixedRateScheduledMessageInfo(
                 new Message("testmessage"),
                 recipients,
@@ -63,9 +65,9 @@ public class SchedulerServiceTest {
     }
 
     @Test
-    public void runTasks_GetValidTasks() {
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+    public void runTasks_GetValidTasks() throws MalformedURLException {
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         FixedRateScheduledMessageInfo fixedInitialInfo = new FixedRateScheduledMessageInfo(
                 new Message("testmessage"),
                 recipients,

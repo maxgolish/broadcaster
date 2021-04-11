@@ -5,6 +5,7 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
 import javax.persistence.Entity;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class FixedScheduledMessageEntity extends ScheduledMessageEntity {
     }
 
     @Builder
-    public FixedScheduledMessageEntity(UUID id, String message, List<String> recipients, long fixedRate) {
+    public FixedScheduledMessageEntity(UUID id, String message, List<URL> recipients, long fixedRate) {
         super(id, message, recipients);
         this.fixedRate = fixedRate;
     }

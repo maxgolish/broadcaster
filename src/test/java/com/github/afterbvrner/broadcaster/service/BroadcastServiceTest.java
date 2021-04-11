@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +20,16 @@ public class BroadcastServiceTest {
     private RestBroadcastService broadcastService;
 
     @Test
-    public void sendToValidUrl() {
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+    public void sendToValidUrl() throws MalformedURLException {
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         broadcastService.send(new Message("testmessage"), recipients);
     }
 
     @Test
-    public void sendToInvalidUrl_ThrowException() {
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://~~~.com");
+    public void sendToInvalidUrl_ThrowException() throws MalformedURLException {
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://~~~.com"));
         assertThrows(
                 EndpointNotAvailableException.class,
                 () -> broadcastService.send(new Message("testmessage"), recipients)

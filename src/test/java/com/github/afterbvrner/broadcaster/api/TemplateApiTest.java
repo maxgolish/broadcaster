@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.net.URL;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +33,7 @@ public class TemplateApiTest {
         TemplateRequest request = new TemplateRequest(
                 "id1",
                 "template $test$",
-                List.of("http://localhost:8081", "http://localhost:8082")
+                List.of(new URL("http://localhost:8081"), new URL("http://localhost:8082"))
         );
         mockMvc.perform(post("/template")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +46,7 @@ public class TemplateApiTest {
         TemplateRequest request = new TemplateRequest(
                 "id2",
                 "template $test$",
-                List.of("http://localhost:8081", "http://localhost:8082")
+                List.of(new URL("http://localhost:8081"), new URL("http://localhost:8082"))
         );
         mockMvc.perform(post("/template")
                 .contentType(MediaType.APPLICATION_JSON)

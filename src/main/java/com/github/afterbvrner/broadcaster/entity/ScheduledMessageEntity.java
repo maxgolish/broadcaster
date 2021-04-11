@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.scheduling.Trigger;
 
 import javax.persistence.*;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public abstract class ScheduledMessageEntity {
 
     private String message;
     @ElementCollection
-    private List<String> recipients;
+    private List<URL> recipients;
 
     public abstract Trigger getTrigger();
 }

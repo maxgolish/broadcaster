@@ -5,6 +5,7 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.CronTrigger;
 
 import javax.persistence.Entity;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class CronScheduledMessageEntity extends ScheduledMessageEntity {
     }
 
     @Builder
-    public CronScheduledMessageEntity(UUID id, String message, List<String> recipients, String cron) {
+    public CronScheduledMessageEntity(UUID id, String message, List<URL> recipients, String cron) {
         super(id, message, recipients);
         this.cron = cron;
     }

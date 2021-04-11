@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +23,11 @@ public class TemplateControllerTest {
     private TemplateController templateController;
 
     @Test
-    public void saveTemplate_ReturnValidTemplate() {
+    public void saveTemplate_ReturnValidTemplate() throws MalformedURLException {
         String templateId = "templatetestid1";
         String template = "Welcome to the $test$";
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         TemplateRequest request = new TemplateRequest(
                 templateId,
                 template,
@@ -39,11 +41,11 @@ public class TemplateControllerTest {
     }
 
     @Test
-    public void saveTemplate_ThenSaveTemplateWithSameId_ThrowException() {
+    public void saveTemplate_ThenSaveTemplateWithSameId_ThrowException() throws MalformedURLException {
         String templateId = "templatetestid2";
         String template = "Welcome to the $test$";
-        List<String> recipients = new ArrayList<>();
-        recipients.add("https://httpbin.org/post");
+        List<URL> recipients = new ArrayList<>();
+        recipients.add(new URL("https://httpbin.org/post"));
         TemplateRequest request = new TemplateRequest(
                 templateId,
                 template,

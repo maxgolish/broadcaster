@@ -8,6 +8,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URL;
 import java.util.List;
 
 @Service
@@ -17,12 +18,12 @@ public class RestBroadcastService implements BroadcastService {
     private final RestTemplate restTemplate;
 
     @Override
-    public void send(Message message, List<String> receivers) {
+    public void send(Message message, List<URL> receivers) {
         for (var receiver : receivers) {
             try {
-                restTemplate.postForLocation(receiver, message);
+                restTemplate.postForLocation(receiver.toString(), message);
             } catch (HttpClientErrorException | ResourceAccessException e) {
-                throw new EndpointNotAvailableException(receiver, e);
+                throw new EndpointNotAvailableException(receiver.toString(), e);
             }
         }
     }
