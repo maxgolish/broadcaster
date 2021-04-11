@@ -21,7 +21,7 @@ public class MessageCreator {
         for (var variable : variables.entrySet())
             constructedMessage = replaceVariable(constructedMessage, variable.getKey(), variable.getValue());
         checkMessage(constructedMessage);
-        constructedMessage = constructedMessage.replaceAll(ESCAPED_DOLLAR, "$");
+        constructedMessage = constructedMessage.replace(ESCAPED_DOLLAR, "$");
 
         return new Message(constructedMessage);
     }
