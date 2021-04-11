@@ -61,4 +61,32 @@ public class SchedulerServiceTest {
         UUID taskId = UUID.randomUUID();
         assertThrows(ScheduledTaskNotFound.class, () -> schedulerService.getInfoById(taskId));
     }
+
+    @Test
+    public void runTasks_GetValidTasks() {
+        List<String> recipients = new ArrayList<>();
+        recipients.add("https://httpbin.org/post");
+        FixedRateScheduledMessageInfo fixedInitialInfo = new FixedRateScheduledMessageInfo(
+                new Message("testmessage"),
+                recipients,
+                10000
+        );
+        CronScheduledMessageInfo cronInitialInfo = new CronScheduledMessageInfo(
+                new Message("testmessage"),
+                recipients,
+                "* * * * * *"
+        );
+        UUID fixedTaskId = schedulerService.schedule(fixedInitialInfo);
+        UUID cronTaskId = schedulerService.schedule(cronInitialInfo);
+        assertEquals(
+                fixedInitialInfo,
+                schedulerService.getInfoById(fixedTaskId),
+                "Fixed rate infos are not equal"
+        );
+        assertEquals(
+                cronInitialInfo,
+                schedulerService.getInfoById(cronTaskId),
+                "Cron infos are not equal"
+        );
+    }
 }

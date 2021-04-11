@@ -1,6 +1,7 @@
 package com.github.afterbvrner.broadcaster.controller;
 
 import com.github.afterbvrner.broadcaster.model.MessageRequest;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.CurrentTaskInfo;
 import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageInfo;
 import com.github.afterbvrner.broadcaster.model.scheduled.request.ScheduledMessageRequest;
 import com.github.afterbvrner.broadcaster.service.MessageService;
@@ -34,7 +35,7 @@ public class MessageController {
     }
 
     @GetMapping("/scheduled")
-    public List<ScheduledMessageInfo> getCurrentScheduledMessages() {
+    public List<CurrentTaskInfo> getCurrentScheduledMessages() {
         return messageService.getCurrentScheduledMessages();
     }
 

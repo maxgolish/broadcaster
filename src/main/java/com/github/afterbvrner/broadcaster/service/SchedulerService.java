@@ -3,6 +3,7 @@ package com.github.afterbvrner.broadcaster.service;
 import com.github.afterbvrner.broadcaster.entity.ScheduledMessageEntity;
 import com.github.afterbvrner.broadcaster.exception.ScheduledTaskNotFound;
 import com.github.afterbvrner.broadcaster.model.Message;
+import com.github.afterbvrner.broadcaster.model.scheduled.info.CurrentTaskInfo;
 import com.github.afterbvrner.broadcaster.model.scheduled.info.ScheduledMessageInfo;
 import com.github.afterbvrner.broadcaster.repository.ScheduledMessageRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
@@ -29,7 +31,7 @@ public class SchedulerService {
         ScheduledMessageEntity savedMessageEntity = scheduledMessageRepository.save(messageEntity);
         ScheduledFuture<?> scheduledFuture = runTask(
                 new Message(savedMessageEntity.getMessage()),
-                info.getRecipients(),
+                savedMessageEntity.getRecipients(),
                 savedMessageEntity.getTrigger()
         );
         currentTasks.put(
@@ -46,11 +48,11 @@ public class SchedulerService {
         );
     }
 
-    public List<ScheduledMessageInfo> getCurrentTasks() {
+    public List<CurrentTaskInfo> getCurrentTasks() {
         return currentTasks
-                .values()
+                .entrySet()
                 .stream()
-                .map(ScheduledTaskInfo::getInfo)
+                .map(task -> new CurrentTaskInfo(task.getKey(), task.getValue().getInfo()))
                 .collect(Collectors.toList());
     }
 
@@ -76,26 +78,24 @@ public class SchedulerService {
         currentTasks
                 .values()
                 .forEach(task -> task.getScheduledFuture().cancel(true));
-        scheduledMessageRepository
-                .findAll()
-                .forEach(message -> scheduledMessageRepository.deleteById(message.getId()));
+        scheduledMessageRepository.deleteAll();
         currentTasks.clear();
     }
 
-//    // Необходим для переинициализации шедулера после перезапуска приложения
-//    // Неактуально для H2, однако необходим при использовании не in-memory БД
-//    @PostConstruct
-//    public void init() {
-//        scheduledMessageRepository
-//                .findAll()
-//                .forEach(message -> {
-//                    runTask(message.getId(),
-//                            new Message(message.getMessage()),
-//                            message.getRecipients(),
-//                            message.getTrigger()
-//                    );
-//                });
-//    }
+    // Необходим для переинициализации шедулера после перезапуска приложения
+    // Неактуально для H2, однако необходим при использовании не in-memory БД
+    @PostConstruct
+    public void init() {
+        scheduledMessageRepository
+                .findAll()
+                .forEach(message ->
+                    runTask(
+                            new Message(message.getMessage()),
+                            message.getRecipients(),
+                            message.getTrigger()
+                    )
+                );
+    }
 
     @Value
     private static class ScheduledTaskInfo {
