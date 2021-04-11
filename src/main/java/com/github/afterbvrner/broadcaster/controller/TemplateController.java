@@ -6,6 +6,8 @@ import com.github.afterbvrner.broadcaster.service.TemplateService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/template")
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class TemplateController {
     }
 
     @PostMapping
-    public void saveTemplate(@RequestBody TemplateRequest template) {
+    public void saveTemplate(@Valid @RequestBody TemplateRequest template) {
         templateService.saveTemplate(template);
     }
 }

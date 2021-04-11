@@ -31,7 +31,7 @@ public class MessageApiTest {
     @Test
     public void sendMessage() throws Exception {
         TemplateRequest request = new TemplateRequest(
-                "id1",
+                "templid1",
                 "template $test$",
                 List.of("https://httpbin.org/post")
         );
@@ -39,7 +39,7 @@ public class MessageApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
-        MessageRequest messageRequest = new MessageRequest("id1", Map.of("test", "message"));
+        MessageRequest messageRequest = new MessageRequest("templid1", Map.of("test", "message"));
         mockMvc.perform(post("/messages/default")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(messageRequest)))
@@ -49,7 +49,7 @@ public class MessageApiTest {
     @Test
     public void sendCronScheduledMessage() throws Exception {
         TemplateRequest request = new TemplateRequest(
-                "id2",
+                "templid2",
                 "template $test$",
                 List.of("https://httpbin.org/post")
         );
@@ -58,7 +58,7 @@ public class MessageApiTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
         ScheduledMessageRequest messageRequest = new CronScheduledMessageRequest(
-                "id2",
+                "templid2",
                 Map.of("test", "message"),
                 "* * * * * *");
         mockMvc.perform(post("/messages/scheduled")
@@ -70,7 +70,7 @@ public class MessageApiTest {
     @Test
     public void sendFixedRateScheduledMessage() throws Exception {
         TemplateRequest request = new TemplateRequest(
-                "id3",
+                "templid3",
                 "template $test$",
                 List.of("https://httpbin.org/post")
         );
@@ -79,7 +79,7 @@ public class MessageApiTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
         ScheduledMessageRequest messageRequest = new FixedRateScheduledMessageRequest(
-                "id3",
+                "templid3",
                 Map.of("test", "message"),
                 10000L);
         mockMvc.perform(post("/messages/scheduled")

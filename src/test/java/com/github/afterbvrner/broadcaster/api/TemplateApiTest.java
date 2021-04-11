@@ -30,7 +30,7 @@ public class TemplateApiTest {
     @Test
     public void saveTemplate() throws Exception {
         TemplateRequest request = new TemplateRequest(
-                "id",
+                "id1",
                 "template $test$",
                 List.of("http://localhost:8081", "http://localhost:8082")
         );
@@ -43,7 +43,7 @@ public class TemplateApiTest {
     @Test
     public void getTemplate() throws Exception {
         TemplateRequest request = new TemplateRequest(
-                "id",
+                "id2",
                 "template $test$",
                 List.of("http://localhost:8081", "http://localhost:8082")
         );
@@ -51,7 +51,7 @@ public class TemplateApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
-        MvcResult result = mockMvc.perform(get("/template/id")
+        MvcResult result = mockMvc.perform(get("/template/id2")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
